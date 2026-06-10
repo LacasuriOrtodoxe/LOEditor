@@ -1,0 +1,42 @@
+lo-toolbar {
+    background:#efefef;
+    display: block;
+    padding: 5px 10px;
+}
+lo-toolbar button{
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    outline: none;
+    padding: 7px;
+    height: 34px;
+    border-radius: 5px;
+}
+lo-toolbar button svg {
+    width: 20px;
+    height: 20px;
+}
+lo-toolbar button:hover {
+    background: #fafafa;
+}
+lo-editor {
+    display: block;
+    height: 450px;
+    overflow-y: scroll;
+    border: 3px solid #efefef;
+    padding: 10px;
+    font-size: 18px;
+    font-family: system-ui, sans-serif;
+}
+lo-editor p {
+    display: block;
+    margin: 0 auto 0;
+    margin-bottom: 10px;
+    line-height: 1.5;
+    text-align: justify;
+    position: relative;
+    max-width: 800px;
+}
+lo-editor p:focus, lo-editor p:focus-visible, lo-editor:focus, lo-editor:focus-visible {
+    outline: 0 solid transparent;
+}
