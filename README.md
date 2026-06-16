@@ -38,9 +38,9 @@ We are grateful to our supporters:
 
 1. **Include the required files** in your webpage:
   ```html
-   <script src="jquery.min.js"></script>
-   <script src="loeditor.min.js"></script>
-   <link rel="stylesheet" href="loeditor.min.css"/>
+   <script src="https://cdn.jsdelivr.net/gh/jquery/jquery@latest/dist/jquery.min.js"></script>
+   <script src="https://cdn.jsdelivr.net/gh/LacasuriOrtodoxe/LOEditor@latest/loeditor.min.js"></script>
+   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/LacasuriOrtodoxe/LOEditor@latest/loeditor.min.css"/>
   ```
 2. **Replace a `<textarea>`** with the editor:
   ```html
