@@ -6,6 +6,7 @@ A **lightweight, extensible, and customizable** WYSIWYG (What You See Is What Yo
 
 ## ✨ Key Features
 
+- **Stable**: No unexpected behaviour.
 - **Lightweight**: Minimal dependencies (only jQuery).
 - **Extensible**: Plugin-based architecture for adding custom functionality.
 - **Customizable**: Configure the toolbar and the styles.
@@ -21,6 +22,9 @@ A **lightweight, extensible, and customizable** WYSIWYG (What You See Is What Yo
 
 Test LOEditor live on our official webpage:  
 🔗 [LOEditor Demo](https://lacasuriortodoxe.ro/academia/open-source/loeditor/)
+
+More open-source projects:
+🔗 [Open Source projects](https://lacasuriortodoxe.ro/academia/open-source/)
 
 ---
 
@@ -68,15 +72,17 @@ We are grateful to our supporters:
 
 ## 📜 Philosophy
 
-LOEditor is designed to produce **clean HTML output** without unnecessary styles or attributes. It leverages the `contenteditable` feature of modern browsers but addresses its unexpected behaviors by:
+LOEditor is designed to produce **clean HTML5 output** using classical HTML semantics. Technically, it leverages the `contenteditable` feature of modern browsers but addresses its unexpected behaviors by:
 
 - Using **`<p>` tags as the root block** for all content (other block types are disallowed).
 - Allowing **custom class names** for root `<p>` tags to represent different styles (e.g., `blockquote`).
 - Converting **each editor action** (e.g., bold, italic, align-left, blockquote) into a plugin.
-- Using **custom HTML semantics** for child tags (e.g., `<lo-b>`, `<lo-i>`) to ensure consistency.
+- Using **custom HTML semantics for child tags** (e.g., `<lo-b>`, `<lo-i>`) during editing to ensure consistency.
 - Preventing **nested child tags of the same type** (e.g., `<lo-b>` cannot contain another `<lo-b>`).
 
 LOEditor recreates essential functionalities from scratch, replacing the unstable `document.execCommand()`.
+
+**Important:** The exported contents will use classical HTML5 semantics, so you don’t need to worry about using different semantics while editing.
 
 ---
 
@@ -262,7 +268,7 @@ const customPlugin = {
   type: 'child', // or 'textblock' or 'block'
   button: '<button type="button"><svg>...</svg></button>',
   style: `
-    .lo-custom {
+    lo-custom {
       color: blue;
       font-weight: bold;
     }
