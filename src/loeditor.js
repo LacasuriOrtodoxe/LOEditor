@@ -489,6 +489,7 @@ class LOEditor {
         
         // Add data to the textarea
         $(this.textarea).val($(container).html());
+        $(this.textarea).change();
         
     }
 
