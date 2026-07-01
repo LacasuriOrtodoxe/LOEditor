@@ -19,7 +19,7 @@ class LOEditor {
         if(settings != null && typeof(settings.toolbar) !== "undefined") {
             this.buttonList = settings.toolbar;
         } else {
-            this.buttonList = "heading bold italic code mark link blockquote pre left center right img separator lo-up lo-down lo-del lo-clean";
+            this.buttonList = "heading bold italic code mark link blockquote pre left center right ulist olist img separator lo-up lo-down lo-del lo-clean";
         }
         
         // Generate the editor
@@ -475,6 +475,9 @@ class LOEditor {
             if($(this).prop('tagName').toLowerCase() != 'p') {
                 $(this).replaceWith('<p>' + $(this).html() + '</p>');
             }
+            if($(this).attr('class') == '') {
+                $(this).attr('class', null);
+            }
         });
         
         // Do plugins
@@ -496,7 +499,7 @@ class LOEditor {
         var container = $('<div>').html($(this.textarea).val());
         
         // Transform any text node into p
-        container.contents().filter(function(){ return this.nodeType === 3 && $.trim(this.nodeValue); }).replaceWith(function(){ return $('<p>').html(this.nodeValue); });
+        container.contents().filter(function(){ return this.nodeType === 3 && this.nodeValue.trim(); }).replaceWith(function(){ return $('<p>').html(this.nodeValue); });
         
         // Do plugins
         this.plugins.forEach((plugin) => {
@@ -563,7 +566,7 @@ class LOEditor {
                 font-weight: bold;
                 margin-top: 30px;
             }`,
-            button: `<button type="button" class="lo-button-images"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Heading Block" type="button" class="lo-button-images"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M11.385 6.25h-4.75q-.257 0-.436-.18q-.18-.18-.18-.438q0-.257.18-.444T6.635 5h10.75q.256 0 .436.18q.179.18.179.438q0 .257-.18.444t-.435.188h-4.75v12.135q0 .256-.18.436q-.18.179-.438.179q-.257 0-.445-.185q-.187-.185-.187-.45z" />
             </svg>
@@ -591,7 +594,7 @@ class LOEditor {
             style:  `lo-b {
                 font-weight: bold;
             }`,
-            button: `<button type="button" class="lo-button-bold">
+            button: `<button title="Bold" type="button" class="lo-button-bold">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M8.916 18.25q-.441 0-.74-.299t-.299-.74V6.79q0-.441.299-.74t.74-.299h3.159q1.433 0 2.529.904T15.7 9.006q0 .967-.508 1.693t-1.257 1.065q.913.255 1.55 1.073t.638 1.97q0 1.61-1.202 2.527q-1.202.916-2.646.916zm.236-1.184h3.062q1.161 0 1.875-.7q.715-.699.715-1.627q0-.93-.714-1.629q-.715-.698-1.894-.698H9.152zm0-5.816h2.864q.997 0 1.69-.617t.692-1.546q0-.947-.704-1.553q-.704-.605-1.667-.605H9.152z" />
@@ -619,7 +622,7 @@ class LOEditor {
                 font-style: italic;
             }`,
             allow: ['lo-i'],
-            button: `<button type="button" class="lo-button-italic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Italic" type="button" class="lo-button-italic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M6.346 18.25q-.234 0-.396-.162t-.161-.397t.161-.396t.396-.16h3.077l3.48-10.27H9.828q-.234 0-.396-.162t-.162-.397t.162-.395t.396-.161h7.192q.235 0 .396.162t.162.397t-.162.396q-.161.16-.396.16h-2.961l-3.481 10.27h2.962q.234 0 .395.162t.162.397t-.162.396t-.395.16z" />
             </svg>
@@ -648,7 +651,7 @@ class LOEditor {
                 border-radius: 5px;
                 padding: 2px 5px;
             }`,
-            button: `<button type="button" class="lo-button-code">
+            button: `<button title="Code" type="button" class="lo-button-code">
             <svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="m8.114 12l1.82-1.821q.147-.146.157-.344q.009-.199-.156-.364q-.166-.165-.357-.165t-.357.165l-1.963 1.963q-.131.132-.184.268q-.053.137-.053.298t.053.298t.184.268l1.983 1.982q.146.146.347.156t.366-.156t.165-.354t-.165-.354zm7.773 0l-1.84 1.84q-.147.147-.157.345t.156.363q.166.166.357.166t.357-.166l1.982-1.982q.131-.132.184-.268t.053-.298t-.053-.298t-.184-.267L14.76 9.452q-.073-.073-.165-.11q-.091-.036-.182-.036t-.193.036t-.174.11q-.165.165-.165.354t.165.354zM5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4h12.769q.69 0 1.153.463T20 5.616v12.769q0 .69-.462 1.153T18.384 20z" />
@@ -678,7 +681,7 @@ class LOEditor {
                 border-radius: 5px;
                 padding: 2px 5px;
             }`,
-            button: `<button type="button" class="lo-button-mark">
+            button: `<button title="Highlight" type="button" class="lo-button-mark">
             <svg xmlns="http://www.w3.org/2000/svg"viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M3 24q-.402 0-.701-.29Q2 23.422 2 23q0-.402.299-.701T3 22h18q.402 0 .701.29q.299.289.299.71q0 .402-.299.701T21 24zm11.004-11.711l-2.6-2.6l-3.885 3.884q-.173.173-.173.423t.173.423l1.748 1.754q.174.173.424.173t.422-.173zM12.117 8.98l2.595 2.594l4.538-4.533q.173-.173.173-.442t-.173-.442l-1.716-1.716q-.172-.173-.442-.173t-.442.173zm-1.061-.36l4.015 4.015l-4.244 4.25q-.485.485-1.134.485t-1.134-.485l-.192-.192l-.683.677q-.217.206-.513.331t-.608.125H5.417q-.273 0-.372-.252t.093-.444l1.839-1.833l-.154-.154q-.484-.485-.49-1.14t.479-1.139zm0 0l4.906-4.906q.484-.484 1.133-.484t1.134.484l1.754 1.748q.484.485.484 1.134q0 .65-.484 1.134l-4.912 4.906z" />
@@ -723,7 +726,7 @@ class LOEditor {
               fill: #99000;
               display: inline-block;
             }`,
-            button: `<button type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Link" type="button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M8.2 20q-1.742 0-2.971-1.229T4 15.8q0-.846.308-1.611q.308-.766.911-1.37l3.023-2.998l.708.708l-3.023 3.004q-.463.463-.705 1.049T4.981 15.8q0 1.34.94 2.27Q6.86 19 8.2 19q.633 0 1.221-.241q.589-.242 1.052-.705l3.018-3.004l.713.714l-3.023 2.998q-.604.604-1.37.92Q9.047 20 8.2 20m1.84-5.346l-.694-.714l4.614-4.613l.713.713zm5.718-.47l-.708-.693l3.023-3.018q.444-.444.683-1.017t.238-1.206q0-1.346-.936-2.298Q17.12 5 15.775 5q-.633 0-1.218.241q-.586.242-1.03.686L10.51 8.95l-.694-.708l3.003-3.004q.604-.604 1.37-.92Q14.954 4 15.8 4q1.742 0 2.968 1.239t1.226 2.986q0 .84-.304 1.596q-.305.756-.91 1.36z" />
             </svg>
@@ -783,7 +786,7 @@ class LOEditor {
                 padding-bottom: 5px;
                 color: #777;
             }`,
-            button: `<button type="button" class="lo-button-blockquote"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Blockquote Block" type="button" class="lo-button-blockquote"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="m7.012 16.558l1.969-3.424q-.173.097-.404.135t-.461.039q-1.4 0-2.354-.972q-.954-.971-.954-2.336q0-1.4.954-2.354t2.354-.954q1.364 0 2.336.954t.971 2.347q0 .486-.118.906t-.336.793l-3.098 5.366q-.062.112-.175.181t-.25.069q-.288 0-.431-.25t-.003-.5m8.769 0l1.969-3.423q-.173.096-.404.134t-.461.039q-1.4 0-2.354-.972q-.954-.971-.954-2.336q0-1.42.954-2.363t2.354-.945q1.364 0 2.336.954t.971 2.347q0 .486-.118.906t-.335.793l-3.099 5.366q-.062.112-.175.181t-.25.069q-.288 0-.431-.25t-.003-.5m-6.113-5.005q.64-.64.64-1.553t-.64-1.553t-1.552-.64q-.914 0-1.553.64q-.64.64-.64 1.553t.64 1.553t1.553.64t1.552-.64m8.77 0q.639-.64.639-1.553t-.64-1.553t-1.553-.64t-1.552.64q-.64.64-.64 1.553t.64 1.553t1.552.64q.914 0 1.553-.64M8.117 10" />
             </svg>
@@ -815,7 +818,7 @@ class LOEditor {
                 border-radius: 10px;
                 font-size: 12px;
             }`,
-            button: `<button type="button" class="lo-button-pre"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Code Block" type="button" class="lo-button-pre"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="m4.114 12.006l4.24 4.24q.14.14.15.345q.01.203-.15.363t-.354.16t-.354-.16l-4.388-4.389q-.131-.13-.184-.267q-.053-.136-.053-.298t.053-.298t.184-.267l4.388-4.389q.146-.146.347-.156t.366.156t.166.357t-.165.357zm15.773-.012l-4.24-4.24q-.141-.14-.15-.344t.15-.364t.353-.16t.354.16l4.388 4.389q.131.13.184.267t.053.298t-.053.298t-.184.268l-4.388 4.388q-.146.146-.344.153q-.198.006-.364-.159t-.165-.357q0-.191.165-.357z" />
             </svg>
@@ -841,7 +844,7 @@ class LOEditor {
             style: `.lo-left {
                 text-align: left;
             }`,
-            button: `<button type="button" class="lo-button-left"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Align Left" type="button" class="lo-button-left"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M4.5 20q-.213 0-.356-.144T4 19.499t.144-.356T4.5 19h15q.213 0 .356.144t.144.357t-.144.356T19.5 20zm0-3.75q-.213 0-.356-.144T4 15.749t.144-.356t.356-.143h9q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-3.75q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-3.75q-.213 0-.356-.144T4 8.249t.144-.356t.356-.143h9q.213 0 .356.144t.144.357t-.144.356t-.356.143zM4.5 5q-.213 0-.356-.144T4 4.499t.144-.356T4.5 4h15q.213 0 .356.144t.144.357t-.144.356T19.5 5z" />
             </svg>
@@ -867,7 +870,7 @@ class LOEditor {
             style: `.lo-center {
                 text-align: center;
             }`,
-            button: `<button type="button" class="lo-button-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Align Center" type="button" class="lo-button-center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M4.5 20q-.213 0-.356-.144T4 19.499t.144-.356T4.5 19h15q.213 0 .356.144t.144.357t-.144.356T19.5 20zm4-3.75q-.213 0-.356-.144T8 15.749t.144-.356t.356-.143h7q.213 0 .356.144t.144.357t-.144.356t-.356.143zm-4-3.75q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm4-3.75q-.213 0-.356-.144T8 8.249t.144-.356t.356-.143h7q.213 0 .356.144t.144.357t-.144.356t-.356.143zM4.5 5q-.213 0-.356-.144T4 4.499t.144-.356T4.5 4h15q.213 0 .356.144t.144.357t-.144.356T19.5 5z" />
             </svg>
@@ -893,7 +896,7 @@ class LOEditor {
             style: `.lo-right {
                 text-align: right;
             }`,
-            button: `<button type="button" class="lo-button-right"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Align Right" type="button" class="lo-button-right"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M4.5 5q-.213 0-.356-.144T4 4.499t.144-.356T4.5 4h15q.213 0 .356.144t.144.357t-.144.356T19.5 5zm6 3.75q-.213 0-.356-.144T10 8.249t.144-.356t.356-.143h9q.213 0 .356.144t.144.357t-.144.356t-.356.143zm-6 3.75q-.213 0-.356-.144T4 11.999t.144-.356t.356-.143h15q.213 0 .356.144t.144.357t-.144.356t-.356.143zm6 3.75q-.213 0-.356-.144T10 15.749t.144-.356t.356-.143h9q.213 0 .356.144t.144.357t-.144.356t-.356.143zM4.5 20q-.213 0-.356-.144T4 19.499t.144-.356T4.5 19h15q.213 0 .356.144t.144.357t-.144.356T19.5 20z" />
             </svg>
@@ -955,7 +958,7 @@ class LOEditor {
                     margin-bottom: 10px;
                 }
             }`,
-            button: `<button type="button" class="lo-button-images"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Insert Image" type="button" class="lo-button-images"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M11.212 16.039L9.946 14.51q-.186-.223-.475-.213q-.288.01-.475.233l-.992 1.323q-.162.211-.05.429q.112.217.354.217h7.538q.243 0 .354-.217t-.03-.43l-2.187-2.915q-.064-.011-.13-.029q-.066-.017-.13-.04zM5.616 20q-.691 0-1.153-.462T4 18.384V5.616q0-.691.463-1.153T5.616 4H9.5q.214 0 .357.143T10 4.5t-.143.357T9.5 5H5.616q-.231 0-.424.192T5 5.616v12.769q0 .23.192.423t.423.192h12.77q.23 0 .423-.192t.192-.423V14.56q0-.214.143-.357t.357-.143t.357.143t.143.357v3.825q0 .69-.462 1.153T18.384 20zm10.473-10q-1.466 0-2.477-1.014Q12.6 7.97 12.6 6.5t1.015-2.485T16.1 3t2.486 1.015T19.6 6.5q0 .598-.18 1.137T18.9 8.68l2.735 2.735q.14.14.15.344t-.15.363t-.354.16t-.354-.16l-2.785-2.784q-.505.369-.98.515T16.089 10m.011-1q1.05 0 1.775-.725T18.6 6.5t-.725-1.775T16.1 4t-1.775.725T13.6 6.5t.725 1.775T16.1 9" />
             </svg>
@@ -1111,7 +1114,7 @@ class LOEditor {
                 -webkit-user-select: none;
                 user-select: none;
             }`,
-            button: `<button type="button" class="lo-button-separator"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Insert separator" type="button" class="lo-button-separator"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M6.616 21q-.667 0-1.141-.475T5 19.386V17q0-.213.144-.356t.357-.144t.356.144T6 17v2.385q0 .269.173.442t.443.173h10.769q.269 0 .442-.173t.173-.443V17q0-.213.144-.356t.357-.144t.356.144T19 17v2.385q0 .666-.475 1.14t-1.14.475zM5 4.616q0-.667.475-1.141T6.615 3h7.214q.331 0 .632.13t.518.349L18.52 7.02q.217.218.348.518t.131.632V11q0 .213-.144.356t-.357.144t-.356-.144T18 11V8h-3.2q-.34 0-.57-.23T14 7.2V4H6.616q-.27 0-.443.173T6 4.616V11q0 .213-.144.356t-.357.144t-.356-.144T5 11zM9.692 14.5q-.212 0-.356-.144t-.144-.357t.144-.356t.356-.143h4.616q.212 0 .356.144t.144.357t-.144.356t-.356.143zm7.616 0q-.213 0-.356-.144t-.144-.357t.144-.356t.356-.143h4.615q.213 0 .356.144t.144.357t-.144.356t-.356.143zm-15.231 0q-.212 0-.356-.144t-.144-.357t.144-.356t.356-.143h4.615q.213 0 .357.144t.143.357t-.143.356t-.357.143zm9.923 2" />
             </svg>
@@ -1147,7 +1150,7 @@ class LOEditor {
         this.addPlugin({
             name: 'lo-up',
             type: 'none',
-            button: `<button type="button" class="lo-button-up" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Move Up" type="button" class="lo-button-up" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M11.5 6.921L6.062 12.36q-.146.146-.345.153q-.198.006-.363-.16q-.16-.164-.163-.353q-.002-.188.163-.354l6.08-6.08q.132-.131.268-.184q.137-.053.298-.053t.298.053t.268.184l6.08 6.08q.14.14.15.342q.01.2-.15.366q-.165.165-.356.165q-.192 0-.357-.165L12.5 6.92V18.5q0 .214-.143.357T12 19t-.357-.143t-.143-.357z" />
             </svg>
@@ -1162,7 +1165,7 @@ class LOEditor {
         this.addPlugin({
             name: 'lo-down',
             type: 'none',
-            button: `<button type="button" class="lo-button-down" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Move Down" type="button" class="lo-button-down" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M11.5 17.079V5.5q0-.213.143-.357T12 5t.357.143t.143.357v11.579l5.439-5.439q.146-.146.344-.153q.198-.006.363.16q.16.164.163.353q.002.188-.163.354l-6.08 6.08q-.132.131-.268.184t-.298.053t-.298-.053q-.136-.052-.267-.183l-6.081-6.081q-.14-.14-.15-.341q-.01-.202.15-.367q.165-.165.357-.165t.356.165z" />
             </svg></button>`,
@@ -1176,7 +1179,7 @@ class LOEditor {
         this.addPlugin({
             name: 'lo-del',
             type: 'none',
-            button: `<button type="button" class="lo-button-delete" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Remove Element" type="button" class="lo-button-delete" style="display: none;"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
               <path d="M0 0h24v24H0z" fill="none" />
               <path fill="currentColor" d="M7.616 20q-.672 0-1.144-.472T6 18.385V6h-.5q-.213 0-.357-.143T5 5.5t.143-.357T5.5 5H9q0-.31.23-.54t.54-.23h4.46q.31 0 .54.23T15 5h3.5q.214 0 .357.143T19 5.5t-.143.357T18.5 6H18v12.385q0 .67-.472 1.143q-.472.472-1.143.472zM17 6H7v12.385q0 .269.173.442t.443.173h8.769q.269 0 .442-.173t.173-.442zM7 6v13zm5 7.208l2.246 2.246q.14.14.344.15t.364-.15t.16-.354t-.16-.354L12.708 12.5l2.246-2.246q.14-.14.15-.344t-.15-.364t-.354-.16t-.354.16L12 11.792L9.754 9.546q-.14-.14-.344-.15t-.364.15t-.16.354t.16.354l2.246 2.246l-2.246 2.246q-.14.14-.15.344t.15.364t.354.16t.354-.16z" />
             </svg></button>`,
@@ -1190,7 +1193,7 @@ class LOEditor {
         this.addPlugin({
             name: 'lo-clean',
             type: 'none',
-            button: `<button type="button" class="lo-button-clean"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            button: `<button title="Remove Empty Paragraphs" type="button" class="lo-button-clean"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
             	<path d="M0 0h24v24H0z" fill="none" />
             	<path fill="currentColor" d="M4 22v-5.866q0-1.835 1.294-3.129t3.129-1.294h1.289V3.634q0-.674.462-1.154q.463-.48 1.134-.48h1.384q.672 0 1.134.48q.463.48.463 1.154v8.078h1.269q1.843 0 3.143 1.293Q20 14.3 20 16.135V22zm1-1h2.75v-3.52q0-.212.144-.355t.357-.144t.356.143t.143.357V21h2.75v-3.52q0-.212.144-.355t.357-.144t.356.143t.143.357V21h2.75v-3.52q0-.212.144-.355t.357-.144t.356.143t.143.357V21H19v-4.866q0-1.442-1.004-2.432t-2.438-.99H8.423q-1.426 0-2.424.998Q5 14.708 5 16.134z" />
             </svg>
@@ -1209,6 +1212,116 @@ class LOEditor {
                 });
             }
         });
+
+        this.addPlugin({
+            name: 'ulist',
+            type: 'textblock',
+            style: `
+                .lo-ulist::before {
+                    content: '•';
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                }
+                .lo-ulist {
+                    padding-left: 20px;
+                    position: relative;
+                }
+            `,
+            button: `<button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path fill="currentColor" d="M10.116 18.5q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143H19.5q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-6q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143H19.5q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-6q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143H19.5q.213 0 .356.144t.144.357t-.144.356t-.356.143zM5.327 19.327q-.547 0-.937-.39T4 18t.39-.937t.937-.39t.937.39t.39.937t-.39.937t-.937.39m0-6q-.547 0-.937-.386Q4 12.556 4 12t.39-.941t.937-.386t.937.386q.39.385.39.941t-.39.941t-.937.386m-.941-6.386Q4 6.556 4 6t.386-.941t.941-.386t.941.386q.386.385.386.941t-.386.941q-.385.386-.941.386t-.941-.386" />
+            </svg></button>`,
+            action: function(event, editor) {
+                editor.toggleBlock('lo-ulist');
+            },
+            save: function(container) {
+                var the_list = [];
+                $(container).find("> p").each(function(){
+                    if($(this).is(".lo-ulist")) {
+                        the_list.push(this);
+                    } else if(the_list.length) {
+                        wrap(the_list);
+                        the_list = [];
+                    }
+                });
+                if(the_list.length) wrap(the_list);
+                function wrap(list){
+                    var $ul = $('<ul>');
+                    $(list[0]).before($ul);
+                    for(var i=0;i<list.length;i++) {
+                        $ul.append($('<li>').append($(list[i]).contents()));
+                        $(list[i]).remove();
+                    }
+                }
+            },
+            load: function(container) {
+                $(container).find('> ul').each(function() {
+                    var $ul = $(this);
+                    var paragraphs = $ul.find('li').map(function() {
+                        return $('<p class="lo-ulist">').html($(this).contents())[0];
+                    }).get();
+                    $ul.replaceWith(paragraphs);
+                });
+            }
+        });
+
+        this.addPlugin({
+            name: 'olist',
+            type: 'textblock',
+            style: `
+            .lo-olist:not(.lo-olist + .lo-olist) {
+              counter-reset: lo-counter;
+            }
+            .lo-olist {
+              counter-increment: lo-counter;
+              padding-left: 25px;
+              position: relative;
+            }
+            .lo-olist::before {
+              content: counter(lo-counter) ". ";
+              position: absolute;
+              left: 0;
+              top: 0;
+            }
+            `,
+            button: `<button type="button"><svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24">
+              <path d="M0 0h24v24H0z" fill="none" />
+              <path fill="currentColor" d="M4.442 21q-.191 0-.317-.125Q4 20.75 4 20.559t.125-.318t.317-.126H6.5V18.75H5.442q-.191 0-.317-.125Q5 18.5 5 18.309t.125-.318t.317-.126H6.5V16.5H4.442q-.191 0-.317-.125Q4 16.25 4 16.059t.125-.318t.317-.126h2.25q.294 0 .493.2t.2.493v1.384q0 .294-.2.493t-.493.2q.294 0 .493.199q.2.199.2.493v1.23q0 .295-.2.494T6.692 21zm.174-6.308q-.249 0-.432-.183Q4 14.325 4 14.077V12.25q0-.294.199-.493t.493-.2H6.5v-1.365H4.442q-.191 0-.317-.125Q4 9.942 4 9.751t.125-.317t.317-.126h2.25q.294 0 .493.199t.2.493v1.75q0 .294-.2.493t-.493.2H4.884v1.365h2.058q.192 0 .317.125t.125.316t-.125.317t-.317.126zm1.01-6.433Q5.5 8.134 5.5 7.942V3.885H4.442q-.191 0-.317-.125Q4 3.635 4 3.443t.125-.317T4.442 3H5.79q.248 0 .422.174t.174.422v4.346q0 .192-.125.317t-.317.125t-.317-.125m4.49 10.241q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143H19.5q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-6q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143H19.5q.213 0 .356.144t.144.357t-.144.356t-.356.143zm0-6q-.213 0-.357-.144t-.143-.357t.143-.356t.357-.143H19.5q.213 0 .356.144t.144.357t-.144.356t-.356.143z" />
+            </svg></button>`,
+            action: function(event, editor) {
+                editor.toggleBlock('lo-olist');
+            },
+            save: function(container) {
+                var the_list = [];
+                $(container).find("> p").each(function(){
+                    if($(this).is(".lo-olist")) {
+                        the_list.push(this);
+                    } else if(the_list.length) {
+                        wrap(the_list);
+                        the_list = [];
+                    }
+                });
+                if(the_list.length) wrap(the_list);
+                function wrap(list){
+                    var $ul = $('<ol>');
+                    $(list[0]).before($ul);
+                    for(var i=0;i<list.length;i++) {
+                        $ul.append($('<li>').append($(list[i]).contents()));
+                        $(list[i]).remove();
+                    }
+                }
+            },
+            load: function(container) {
+                $(container).find('> ol').each(function() {
+                    var $ul = $(this);
+                    var paragraphs = $ul.find('li').map(function() {
+                        return $('<p class="lo-olist">').html($(this).contents())[0];
+                    }).get();
+                    $ul.replaceWith(paragraphs);
+                });
+            }
+        });
         
         
     }
@@ -1221,3 +1334,14 @@ class LOEditor {
 $.fn.hasParent = function (e) {
     return !!$(this).parents(e).length;
 };
+
+// Use LOEditor in jQuery
+(function($) {
+    $.fn.LOEditor = function(options = {}) {
+        // Return jQuery object for chaining
+        return this.each(function() {
+            // Create new LOEditor instance for each matched element
+            new LOEditor(this, options);
+        });
+    };
+})(jQuery);
