@@ -20,10 +20,10 @@ A **lightweight, extensible, and customizable** WYSIWYG (What You See Is What Yo
 
 ## 🌐 Demo
 
-Test LOEditor live on our official webpage:  
+Test LOEditor live on our official webpage: 
 🔗 [LOEditor Demo](https://lacasuriortodoxe.ro/academia/open-source/loeditor/)
 
-More open-source projects:
+More open-source projects: 
 🔗 [Open Source projects](https://lacasuriortodoxe.ro/academia/open-source/)
 
 ---
@@ -50,8 +50,9 @@ We are grateful to our supporters:
   ```html
    <textarea id="example">Some text...</textarea>
    <script>
-     var textarea = document.querySelector("#example");
-     var editor = new LOEditor(textarea);
+     $('#example').LOEditor({
+         upload: "upload-url"
+     });
    </script>
   ```
 3. **Replace all textareas by class name**:
@@ -59,30 +60,11 @@ We are grateful to our supporters:
    <textarea class="editor">Some text 1...</textarea>
    <textarea class="editor">Some text 2...</textarea>
    <script>
-     var textareas = document.querySelectorAll(".editor");
-     for (let i = 0; i < textareas.length; i++) {
-       new LOEditor(textareas[i], {
+     $('.editor').LOEditor({
          upload: "upload-url"
-       });
-     }
+     });
    </script>
   ```
-
----
-
-## 📜 Philosophy
-
-LOEditor is designed to produce **clean HTML5 output** using classical HTML semantics. Technically, it leverages the `contenteditable` feature of modern browsers but addresses its unexpected behaviors by:
-
-- Using **`<p>` tags as the root block** for all content (other block types are disallowed).
-- Allowing **custom class names** for root `<p>` tags to represent different styles (e.g., `blockquote`).
-- Converting **each editor action** (e.g., bold, italic, align-left, blockquote) into a plugin.
-- Using **custom HTML semantics for child tags** (e.g., `<lo-b>`, `<lo-i>`) during editing to ensure consistency.
-- Preventing **nested child tags of the same type** (e.g., `<lo-b>` cannot contain another `<lo-b>`).
-
-LOEditor recreates essential functionalities from scratch, replacing the unstable `document.execCommand()`.
-
-**Important:** The exported contents will use classical HTML5 semantics, so you don’t need to worry about using different semantics while editing.
 
 ---
 
@@ -95,7 +77,7 @@ The `LOEditor` constructor accepts a **settings object** with the following prop
 
 | Property  | Type                | Description                                                                | Default Value                                                                                                       |
 | --------- | ------------------- | -------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `toolbar` | `string` or `array` | List of plugin names to display in the toolbar (space-separated or array). | `"heading bold italic code mark link blockquote pre left center right img separator lo-up lo-down lo-del lo-clean"` |
+| `toolbar` | `string` or `array` | List of plugin names to display in the toolbar (space-separated or array). | `"heading bold italic code mark link blockquote pre left center right ulist olist img separator lo-up lo-down lo-del lo-clean"` |
 | `plugins` | `array`             | Array of custom plugins to load.                                           | `[]`                                                                                                                |
 | `upload`  | `string`            | URL for uploading images (used by the `img` plugin).                       | `null`                                                                                                              |
 
@@ -244,6 +226,8 @@ LOEditor includes the following built-in plugins:
 | `left`       | `textblock` | Aligns paragraph to the left.                                                | ✅              |
 | `center`     | `textblock` | Aligns paragraph to the center.                                              | ✅              |
 | `right`      | `textblock` | Aligns paragraph to the right.                                               | ✅              |
+| `ulist`      | `textblock` | Bullet list                                                                  | ✅              |
+| `olist`      | `textblock` | Numbered list                                                                | ✅              |
 | `img`        | `block`     | Inserts an image (requires `upload` URL in settings).                        | ✅              |
 | `separator`  | `block`     | Inserts a horizontal rule (`<hr>`).                                          | ✅              |
 | `lo-up`      | `block`     | Moves the selected block up.                                                 | ✅              |
@@ -251,6 +235,21 @@ LOEditor includes the following built-in plugins:
 | `lo-del`     | `block`     | Deletes the selected block.                                                  | ✅              |
 | `lo-clean`   | `block`     | Removes empty paragraphs.                                                    | ✅              |
 
+---
+
+## 📜 Programming Philosophy
+
+LOEditor is designed to produce **clean HTML5 output** using classical HTML semantics. Technically, it leverages the `contenteditable` feature of modern browsers but addresses its unexpected behaviors by:
+
+- Using **`<p>` tags as the root block** for all content (other block types are disallowed).
+- Allowing **custom class names** for root `<p>` tags to represent different styles (e.g., `blockquote`).
+- Converting **each editor action** (e.g., bold, italic, align-left, blockquote) into a plugin.
+- Using **custom HTML semantics for child tags** (e.g., `<lo-b>`, `<lo-i>`) during editing to ensure consistency.
+- Preventing **nested child tags of the same type** (e.g., `<lo-b>` cannot contain another `<lo-b>`).
+
+LOEditor recreates essential functionalities from scratch, replacing the unstable `document.execCommand()`.
+
+**Important:** The exported contents will use classical HTML5 semantics, so you don’t need to worry about using different semantics while editing.
 
 ---
 
@@ -297,7 +296,7 @@ const customPlugin = {
 Pass the plugin to the editor during initialization:
 
 ```javascript
-new LOEditor(textarea, {
+$('.editor').LOEditor({
   plugins: [customPlugin],
   toolbar: "bold italic custom-button"
 });
@@ -335,10 +334,11 @@ const underlinePlugin = {
   }
 };
 
-new LOEditor(textarea, {
+$('.editor').LOEditor({
   plugins: [underlinePlugin],
   toolbar: "bold italic underline"
 });
+
 ```
 
 ### Example 2: Custom Block Plugin for Alerts
@@ -371,10 +371,11 @@ const alertPlugin = {
   }
 };
 
-new LOEditor(textarea, {
+$('.editor').LOEditor({
   plugins: [alertPlugin],
   toolbar: "bold italic alert"
 });
+
 ```
 
 ---
